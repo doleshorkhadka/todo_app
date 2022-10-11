@@ -28,12 +28,18 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.2
+  firebase_auth: ^3.11.2
+  firebase_core: ^1.24.0
+  firebase_database: ^9.1.7
   flutter:
     sdk: flutter
   font_awesome_flutter: ^10.2.1
+  google_sign_in: ^5.4.2
+  introduction_screen: ^3.0.2
   provider: ^6.0.3
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.10.0
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
@@ -55,6 +61,7 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/start-img/
     - assets/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
