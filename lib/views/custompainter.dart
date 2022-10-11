@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/app_color.dart';
 
 class BottomNavBarPainter extends CustomPainter {
   BottomNavBarPainter({this.navcolor});
@@ -6,7 +7,14 @@ class BottomNavBarPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = navcolor ?? const Color(0xff68d6f7)
+      ..shader =
+          LinearGradient(colors: [AppColor.mainbuttons, AppColor.bottomnav])
+              .createShader(
+        Rect.fromPoints(
+          Offset(0, size.height),
+          Offset(size.width, 0),
+        ),
+      )
       ..style = PaintingStyle.fill
       ..strokeWidth = 0;
 

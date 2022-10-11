@@ -1,12 +1,23 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/controller/start_controller.dart';
 import 'package:todo_app/core/app_color.dart';
+import 'package:todo_app/routes/navigation_routes.dart';
 import 'package:todo_app/views/custompainter.dart';
+import 'package:todo_app/views/start_screen/login.dart';
 
-class BottomNavAppBar extends StatelessWidget {
-  const BottomNavAppBar({
+class BottomNavAppBar extends StatefulWidget {
+  BottomNavAppBar({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<BottomNavAppBar> createState() => _BottomNavAppBarState();
+}
+
+class _BottomNavAppBarState extends State<BottomNavAppBar> {
+  OnboardingInfoController controller = OnboardingInfoController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +28,7 @@ class BottomNavAppBar extends StatelessWidget {
             // size: const Size(double.infinity, 150),
             painter: BottomNavBarPainter(navcolor: AppColor.bottomnav),
             child: Container(
-              margin: const EdgeInsets.only(bottom: 20),
+              margin: const EdgeInsets.only(bottom: 20, left: 10),
               height: 130,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -25,46 +36,37 @@ class BottomNavAppBar extends StatelessWidget {
                 children: [
                   OutlinedButton(
                     onPressed: () {},
-                    child: const Text('Login'),
+                    child: const Text(
+                      'Back',
+                      style: TextStyle(color: Colors.white70),
+                    ),
                   ),
-                  Container(
-                    height: 30,
-                    // color: Colors.black,
-                    width: 20,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 5,
-                          height: 5,
-                          decoration: const BoxDecoration(
+                  Row(
+                    children: List.generate(
+                      controller.myLists.length,
+                      (index) {
+                        return Container(
+                          margin: EdgeInsets.all(4),
+                          width: 7,
+                          height: 7,
+                          decoration: BoxDecoration(
+                            color: controller.pageController.page == index
+                                ? Colors.white
+                                : Colors.white54,
                             shape: BoxShape.circle,
-                            color: Colors.deepPurpleAccent,
                           ),
-                        ),
-                        Container(
-                          width: 5,
-                          height: 5,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.deepPurpleAccent,
-                          ),
-                        ),
-                        Container(
-                          width: 5,
-                          height: 5,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.deepPurpleAccent,
-                          ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
                   ),
                   OutlinedButton(
-                    onPressed: () {},
-                    child: const Text('SignUp'),
+                    onPressed: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) => LoginBottomSheet());
+                    },
+                    child: const Text('Login',
+                        style: TextStyle(color: Colors.white70)),
                   ),
                 ],
               ),
@@ -76,7 +78,16 @@ class BottomNavAppBar extends StatelessWidget {
             child: FloatingActionButton(
               backgroundColor: AppColor.mainbuttons,
               elevation: 10,
-              onPressed: () {},
+              onPressed: () {
+                if (controller.pageController.page! >= 2) {
+                  Navigator.popAndPushNamed(context, RouteManager.homepage);
+                } else {
+                  controller.pageController.nextPage(
+                      duration: Duration(milliseconds: 10),
+                      curve: Curves.easeIn);
+                  setState(() {});
+                }
+              },
               child: const Icon(CupertinoIcons.arrow_right),
             ),
           ),
